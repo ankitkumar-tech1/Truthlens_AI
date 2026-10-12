@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+}
+

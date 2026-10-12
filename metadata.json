@@ -1,0 +1,6 @@
+{
+  "name": "TruthLens AI",
+  "description": "Explainable multimodal fact-checking & misinformation detection platform powered by domain analysis, RAG source verification, and AI forensics.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

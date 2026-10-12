@@ -1,0 +1,22 @@
+
+# Node.js
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+
+# Environment variables
+.env*
+!.env.example
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# Backend virtual environment
+backend/.venv/
+.vite/
