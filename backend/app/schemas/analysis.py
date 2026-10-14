@@ -28,6 +28,9 @@ class GeminiVerificationResult(BaseModel):
     supporting_evidence: List[str]
     contradicting_evidence: List[str]
     sources: List[VerificationSource]
+    correct_information: Optional[str] = None
+    correction_explanation: Optional[str] = None
+    correction_sources: List[VerificationSource] = Field(default_factory=list)
 
 
 class TextUrlAnalysisResponse(BaseModel):
@@ -46,6 +49,9 @@ class TextUrlAnalysisResponse(BaseModel):
     supporting_evidence: List[str]
     contradicting_evidence: List[str]
     sources: List[VerificationSource]
+    correct_information: Optional[str] = None
+    correction_explanation: Optional[str] = None
+    correction_sources: List[VerificationSource] = Field(default_factory=list)
     verdictTitle: str
     verdictSummary: str
     riskLevel: str
@@ -64,6 +70,13 @@ class TextUrlAnalysisUnavailable(BaseModel):
     sources: List[VerificationSource] = Field(default_factory=list)
     supporting_evidence: List[str] = Field(default_factory=list)
     contradicting_evidence: List[str] = Field(default_factory=list)
+    
+    correct_information: None = None
+    correction_explanation: None = None
+    correction_sources: List[VerificationSource] = Field(
+        default_factory=list
+    )
+
 
 
 class ImageAnalysisRequest(BaseModel):

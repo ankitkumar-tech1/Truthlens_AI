@@ -9,14 +9,26 @@ backend_env = BASE_DIR / ".env"
 
 if backend_env.exists():
     load_dotenv(dotenv_path=backend_env)
+
 if root_env.exists():
     load_dotenv(dotenv_path=root_env)
 
+
 class Settings:
     PROJECT_NAME: str = "TruthLens AI Verification Engine"
+
+    # Gemini settings (kept for image inspection)
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+
+    # Groq settings (for text verification)
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
+    GROQ_MODEL: str = os.getenv(
+        "GROQ_MODEL", "llama-3.3-70b-versatile"
+    )
+
     APP_URL: str = os.getenv("APP_URL", "http://localhost:3000")
     PORT: int = int(os.getenv("PORT", "8000"))
+
 
 settings = Settings()
