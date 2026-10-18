@@ -248,10 +248,11 @@ def search_web_evidence(query: str, max_results: int = 5) -> List[Dict[str, str]
 
     for search_query in queries_to_try:
         try:
-            results = DDGS(timeout=10).text(
-                search_query,
-                max_results=max_results + 3,
-            )
+            with DDGS(timeout=15) as ddgs:
+                results = ddgs.text(
+                    search_query,
+                    max_results=max_results + 3,
+                )
             for item in results or []:
                 title = (item.get("title") or "").strip()
                 url = (item.get("href") or "").strip()
