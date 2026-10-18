@@ -248,7 +248,7 @@ def search_web_evidence(query: str, max_results: int = 5) -> List[Dict[str, str]
 
     for search_query in queries_to_try:
         try:
-            results = DDGS().text(
+            results = DDGS(timeout=10).text(
                 search_query,
                 max_results=max_results + 3,
             )
