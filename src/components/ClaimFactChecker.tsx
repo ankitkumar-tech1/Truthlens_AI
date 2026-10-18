@@ -112,7 +112,7 @@ export const ClaimFactChecker: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      
+
       {/* Top Header & Search Section */}
       <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 shadow-sm space-y-6">
         <div>
@@ -194,10 +194,10 @@ export const ClaimFactChecker: React.FC = () => {
       {/* Report Result Display */}
       {report && !loading && (
         <div className="space-y-6 animate-fade-in">
-          
+
           {/* Executive Summary & Risk Gauge Card */}
           <div className="bg-white border border-slate-200 rounded-xl p-6 sm:p-8 shadow-sm space-y-6">
-            
+
             {/* Header / Risk Badge */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
               <div>
@@ -277,7 +277,7 @@ export const ClaimFactChecker: React.FC = () => {
           </div>
 
           <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-3">
-            <h3 className="text-sm font-bold text-slate-900">Google Search Grounding</h3>
+            <h3 className="text-sm font-bold text-slate-900">Web Search Evidence</h3>
             <p className="text-xs text-slate-600">
               {report.traceability.searchGroundingActive
                 ? `${report.sources.length} grounding source${report.sources.length === 1 ? '' : 's'} returned`
@@ -290,7 +290,7 @@ export const ClaimFactChecker: React.FC = () => {
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
                 <ExternalLink className="w-4 h-4 text-blue-600" />
-                <h3 className="text-sm font-bold text-slate-900">Google Search Grounding Sources</h3>
+                <h3 className="text-sm font-bold text-slate-900">Web Search Evidence Sources</h3>
               </div>
             </div>
 

@@ -1,14 +1,17 @@
 
+import logging
 import time
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException, status
+from fastapi.responses import JSONResponse
 
 from app.core.config import settings
 from app.schemas.analysis import (
     ImageAnalysisRequest,
     TextUrlAnalysisRequest,
     TextUrlAnalysisResponse,
+    TextUrlAnalysisUnavailable,
     VerificationSource,
 )
 from app.services.forensics import analyze_image_forensics
@@ -18,6 +21,7 @@ from app.services.gemini_service import (
     inspect_image_vision_notes,
 )
 
+logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
@@ -32,7 +36,7 @@ def analyze_text_url(payload: TextUrlAnalysisRequest):
             detail="inputContent is required and must be a string",
         )
 
-    print("[TruthLens] Received claim:", text)
+    logger.info("[TruthLens] Received claim for analysis: %s", text[:80])
 
     content_str = text.strip()
     is_url = (
@@ -43,164 +47,21 @@ def analyze_text_url(payload: TextUrlAnalysisRequest):
     )
 
     input_type_label = "URL" if is_url else "CLAIM"
-
-    # Initialize this before try, so it always exists.
     grounding_sources = []
 
     try:
         verification, grounding_sources = analyze_text_with_gemini(
             text, input_type_label
         )
-
     except GeminiVerificationError as err:
-        print(
-            f"[TruthLens] Gemini error "
-            f"({err.error_code}): {err.message}"
+        logger.warning(
+            "[TruthLens] Verification error (%s): %s",
+            err.error_code,
+            err.message,
         )
-
-        lower_claim = text.lower()
-
-        fallback_verdict = "UNVERIFIED"
-        fallback_summary = (
-            "Verification is temporarily unavailable. "
-            "The claim could not be verified using the AI service."
-        )
-        fallback_reasoning = err.message
-        trust_score = 50
-        risk_score = 50
-
-        supporting = []
-        contradicting = []
-        sources = []
-
-        # Do not invent corrections when verification fails.
-        correct_information = None
-        correction_explanation = None
-        correction_sources = []
-
-        if "tajmahal" in lower_claim or "taj mahal" in lower_claim:
-            if "kanpur" in lower_claim:
-                fallback_verdict = "FALSE"
-                fallback_summary = (
-                    "The Taj Mahal is located in Agra, Uttar Pradesh, "
-                    "India, not Kanpur."
-                )
-                fallback_reasoning = (
-                    "The Taj Mahal is a historic mausoleum in Agra, "
-                    "on the right bank of the Yamuna River."
-                )
-                trust_score = 10
-                risk_score = 90
-                contradicting = [
-                    "The Taj Mahal is located in Agra, Uttar Pradesh."
-                ]
-                sources = [
-                    VerificationSource(
-                        title="UNESCO World Heritage Centre - Taj Mahal",
-                        url="https://whc.unesco.org/en/list/252",
-                    )
-                ]
-
-                correct_information = (
-                    "The Taj Mahal is located in Agra, Uttar Pradesh, India."
-                )
-                correction_explanation = (
-                    "The original claim incorrectly places the Taj Mahal "
-                    "in Kanpur. Its documented location is Agra."
-                )
-                correction_sources = sources.copy()
-
-            elif "agra" in lower_claim:
-                fallback_verdict = "TRUE"
-                fallback_summary = (
-                    "The Taj Mahal is located in Agra, Uttar Pradesh, India."
-                )
-                fallback_reasoning = (
-                    "The Taj Mahal is a marble mausoleum in Agra."
-                )
-                trust_score = 98
-                risk_score = 2
-                supporting = [
-                    "UNESCO identifies the Taj Mahal as a World Heritage site."
-                ]
-                sources = [
-                    VerificationSource(
-                        title="UNESCO World Heritage Centre - Taj Mahal",
-                        url="https://whc.unesco.org/en/list/252",
-                    )
-                ]
-
-        elif "psit" in lower_claim:
-            if "kanpur" in lower_claim:
-                fallback_verdict = "TRUE"
-                fallback_summary = (
-                    "PSIT's main campus is located in Bhauti, Kanpur, "
-                    "Uttar Pradesh."
-                )
-                fallback_reasoning = (
-                    "PSIT's official website provides information "
-                    "about its Kanpur campus."
-                )
-                trust_score = 95
-                risk_score = 5
-                supporting = [
-                    "PSIT's official website identifies its Kanpur campus."
-                ]
-                sources = [
-                    VerificationSource(
-                        title="PSIT Official Website",
-                        url="https://www.psit.ac.in",
-                    )
-                ]
-
-            elif "agra" in lower_claim:
-                fallback_verdict = "FALSE"
-                fallback_summary = (
-                    "PSIT's main campus is in Kanpur, not Agra."
-                )
-                fallback_reasoning = (
-                    "PSIT's official website provides information "
-                    "about its Kanpur campus."
-                )
-                trust_score = 10
-                risk_score = 90
-                contradicting = [
-                    "PSIT's main campus is located in Kanpur."
-                ]
-                sources = [
-                    VerificationSource(
-                        title="PSIT Official Website",
-                        url="https://www.psit.ac.in",
-                    )
-                ]
-
-                correct_information = (
-                    "PSIT's main campus is located in Kanpur, "
-                    "Uttar Pradesh, not Agra."
-                )
-                correction_explanation = (
-                    "The claim gives the wrong city for PSIT's main campus."
-                )
-                correction_sources = sources.copy()
-
-        # Preserve the fallback sources in the API response.
-        grounding_sources = sources
-
-        from app.schemas.analysis import GeminiVerificationResult
-
-        verification = GeminiVerificationResult(
-            verdict=fallback_verdict,
-            trust_score=trust_score,
-            risk_score=risk_score,
-            confidence=50,
-            summary=fallback_summary,
-            reasoning=fallback_reasoning,
-            supporting_evidence=supporting,
-            contradicting_evidence=contradicting,
-            sources=sources,
-            correct_information=correct_information,
-            correction_explanation=correction_explanation,
-            correction_sources=correction_sources,
+        return JSONResponse(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            content=TextUrlAnalysisUnavailable().model_dump(exclude_none=False),
         )
 
     verdict_titles = {
@@ -239,12 +100,12 @@ def analyze_text_url(payload: TextUrlAnalysisRequest):
             "correct_information": verification.correct_information,
             "correction_explanation": verification.correction_explanation,
             "correction_sources": verification.correction_sources,
-            "verdictTitle": verdict_titles[verification.verdict],
+            "verdictTitle": verdict_titles.get(verification.verdict, "UNVERIFIED"),
             "verdictSummary": verification.summary,
-            "riskLevel": risk_levels[verification.verdict],
+            "riskLevel": risk_levels.get(verification.verdict, "INCONCLUSIVE"),
             "overallScore": verification.risk_score,
             "traceability": {
-                "modelUsed": settings.GEMINI_MODEL,
+                "modelUsed": settings.GROQ_MODEL or settings.GEMINI_MODEL,
                 "executionTimeMs": int(
                     (time.time() - start_time) * 1000
                 ),
@@ -253,7 +114,7 @@ def analyze_text_url(payload: TextUrlAnalysisRequest):
         }
     ).model_dump()
 
-    print("[TruthLens] Final API response:", result)
+    logger.info("[TruthLens] Analysis completed with verdict: %s", verification.verdict)
     return result
 
 

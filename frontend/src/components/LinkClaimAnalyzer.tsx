@@ -93,14 +93,14 @@ export const LinkClaimAnalyzer: React.FC<LinkClaimAnalyzerProps> = ({ onReportGe
       {/* Input Box */}
       <div className="bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 sm:p-8 shadow-xl dark:shadow-2xl backdrop-blur-xl relative overflow-hidden transition-colors duration-300">
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full filter blur-3xl -z-10" />
-        
+
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center space-x-3">
             <Search className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
             <span>Analyze News Article or Link</span>
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
-             Paste any information or claim to verify its accuracy and reliability.
+            Paste any information or claim to verify its accuracy and reliability.
           </p>
         </div>
 
@@ -217,7 +217,7 @@ export const LinkClaimAnalyzer: React.FC<LinkClaimAnalyzerProps> = ({ onReportGe
             <div className="bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 rounded-xl p-4 space-y-2">
               <div className="flex items-center space-x-2 text-xs font-semibold text-slate-800 dark:text-slate-300">
                 <Globe className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>Google Search grounding</span>
+                <span>Web Search Evidence</span>
               </div>
               <div className="text-xs text-slate-500 dark:text-slate-400">
                 {report.traceability.searchGroundingActive
@@ -258,7 +258,7 @@ export const LinkClaimAnalyzer: React.FC<LinkClaimAnalyzerProps> = ({ onReportGe
 
           {report.sources.length > 0 && (
             <div className="border-t border-slate-200 dark:border-slate-800 pt-4 space-y-3">
-              <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Google Search grounding sources</h4>
+              <h4 className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Web Search Evidence sources</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {report.sources.map((src, i) => (
                   <a

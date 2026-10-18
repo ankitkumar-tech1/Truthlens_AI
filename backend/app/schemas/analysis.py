@@ -70,12 +70,6 @@ class TextUrlAnalysisUnavailable(BaseModel):
     sources: List[VerificationSource] = Field(default_factory=list)
     supporting_evidence: List[str] = Field(default_factory=list)
     contradicting_evidence: List[str] = Field(default_factory=list)
-    
-    correct_information: None = None
-    correction_explanation: None = None
-    correction_sources: List[VerificationSource] = Field(
-        default_factory=list
-    )
 
 
 

@@ -142,7 +142,7 @@ Return ONLY raw JSON matching this schema:
         riskLevel: riskLevels[v] || "MODERATE_RISK",
         overallScore: parsed.risk_score ?? 50,
         traceability: {
-          modelUsed: "gemini-2.5-flash",
+          modelUsed: "Groq (llama-3.3-70b-versatile) + DDGS Web Search",
           executionTimeMs: 1200,
           searchGroundingActive: sources.length > 0,
         },
@@ -182,7 +182,7 @@ app.post("/api/analyze/image", async (req, res) => {
     software: "Adobe Photoshop / Midjourney v6 Pipeline",
     dateTimeOriginal: "2026-07-20T14:22:00Z",
     hasExif: sampleId === "img-2",
-    anomalies: sampleId === "img-2" 
+    anomalies: sampleId === "img-2"
       ? ["Valid Camera Serial Number matched Canon EOS R5 catalog."]
       : ["EXIF metadata stripped or replaced with digital creation tools.", "Color profile RGB mismatch with standard camera sensors."],
   };
@@ -231,21 +231,21 @@ app.post("/api/analyze/image", async (req, res) => {
       },
       visualAnomaliesDetected: isSynthetic
         ? [
-            "Over-smoothed plastic skin lighting lacking pore texture.",
-            "Subtle geometric distortion on background architectural lines.",
-            "Synthetic color gradient characteristic of diffusion models."
-          ]
+          "Over-smoothed plastic skin lighting lacking pore texture.",
+          "Subtle geometric distortion on background architectural lines.",
+          "Synthetic color gradient characteristic of diffusion models."
+        ]
         : [
-            "Natural camera sensor noise distribution across shadow areas.",
-            "Authentic lens chromatic aberration on sharp contrast borders."
-          ],
+          "Natural camera sensor noise distribution across shadow areas.",
+          "Authentic lens chromatic aberration on sharp contrast borders."
+        ],
       webGroundingMatches: isSynthetic
         ? [
-            { title: "Midjourney v6 Showcase Gallery", url: "https://midjourney.com", similarity: "94% Visual Feature Match" }
-          ]
+          { title: "Midjourney v6 Showcase Gallery", url: "https://midjourney.com", similarity: "94% Visual Feature Match" }
+        ]
         : [
-            { title: "Reuters Official Image Wire Archive", url: "https://reuters.com/pictures", similarity: "100% Original Press Match" }
-          ],
+          { title: "Reuters Official Image Wire Archive", url: "https://reuters.com/pictures", similarity: "100% Original Press Match" }
+        ],
       traceability: {
         primaryModel: "CLIP-ViT-L/14 Deepfake Classifier + Gemini Vision",
         trainingData: "FaceForensics++, CIFAKE (120k samples)",
@@ -302,15 +302,15 @@ app.post("/api/analyze/audio", (req, res) => {
     },
     signals: isSynthetic
       ? [
-          "Zero human vocal tract friction noise detected during pauses.",
-          "Abrupt pitch steps characteristic of neural vocoders (ElevenLabs/VALL-E architecture).",
-          "ASVspoof 2021 model logit indicates 94.1% synthetic likelihood."
-        ]
+        "Zero human vocal tract friction noise detected during pauses.",
+        "Abrupt pitch steps characteristic of neural vocoders (ElevenLabs/VALL-E architecture).",
+        "ASVspoof 2021 model logit indicates 94.1% synthetic likelihood."
+      ]
       : [
-          "Natural inhalation breath sounds present between stanzas.",
-          "Organic fundamental frequency variation (pitch micro-tremor).",
-          "Natural room acoustic reverberation profile."
-        ],
+        "Natural inhalation breath sounds present between stanzas.",
+        "Organic fundamental frequency variation (pitch micro-tremor).",
+        "Natural room acoustic reverberation profile."
+      ],
     traceability: {
       modelName: "Wav2Vec2-XLSR-ASVspoof Checkpoint",
       dataset: "ASVspoof 2021 LA & DF Track",

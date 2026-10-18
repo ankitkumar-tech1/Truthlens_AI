@@ -12,7 +12,7 @@ export const ScoringModal: React.FC<ScoringModalProps> = ({ isOpen, onClose }) =
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
       <div className="bg-white border border-slate-200 rounded-xl max-w-2xl w-full p-6 sm:p-8 space-y-6 shadow-2xl max-h-[90vh] overflow-y-auto">
-        
+
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-slate-100 pb-4">
           <div className="flex items-center space-x-2">
@@ -51,7 +51,7 @@ export const ScoringModal: React.FC<ScoringModalProps> = ({ isOpen, onClose }) =
             <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-1">
               <span className="font-bold text-blue-600 block">3. Source Corroboration & Wire Search Penalty (Max 35 pts)</span>
               <p className="text-slate-600">
-                Queries Google Search Grounding to cross-reference claims against major news wire services (Reuters, AP, BBC, Snopes, PolitiFact, CDC, NASA). Absence of corroborating coverage adds penalty points.
+                Queries Web Search Evidence to cross-reference claims against major news wire services (Reuters, AP, BBC, Snopes, PolitiFact, CDC, NASA). Absence of corroborating coverage adds penalty points.
               </p>
             </div>
 

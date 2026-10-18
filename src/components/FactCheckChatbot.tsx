@@ -81,7 +81,7 @@ export const FactCheckChatbot: React.FC = () => {
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden flex flex-col h-[650px]">
-      
+
       {/* Header */}
       <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
         <div className="flex items-center space-x-3">
@@ -92,7 +92,7 @@ export const FactCheckChatbot: React.FC = () => {
             <h2 className="text-sm font-bold text-slate-900">TruthLens Grounded RAG Assistant</h2>
             <span className="text-[10px] text-slate-500 font-medium flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>Live Google Search Grounding Active</span>
+              <span>Live Web Search Evidence Active</span>
             </span>
           </div>
         </div>
@@ -103,26 +103,23 @@ export const FactCheckChatbot: React.FC = () => {
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className={`flex items-start gap-2.5 max-w-2xl ${
-              msg.sender === 'user' ? 'ml-auto flex-row-reverse' : ''
-            }`}
+            className={`flex items-start gap-2.5 max-w-2xl ${msg.sender === 'user' ? 'ml-auto flex-row-reverse' : ''
+              }`}
           >
             <div
-              className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
-                msg.sender === 'user'
+              className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${msg.sender === 'user'
                   ? 'bg-blue-600 text-white'
                   : 'bg-blue-50 text-blue-600 border border-blue-200'
-              }`}
+                }`}
             >
               {msg.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
             </div>
 
             <div
-              className={`p-3.5 rounded-2xl space-y-2 ${
-                msg.sender === 'user'
+              className={`p-3.5 rounded-2xl space-y-2 ${msg.sender === 'user'
                   ? 'bg-blue-600 text-white rounded-tr-none'
                   : 'bg-slate-50 border border-slate-200 text-slate-800 rounded-tl-none'
-              }`}
+                }`}
             >
               <p className="leading-relaxed whitespace-pre-wrap">{msg.text}</p>
 

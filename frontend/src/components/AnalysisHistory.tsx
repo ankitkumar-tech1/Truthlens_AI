@@ -61,7 +61,7 @@ Risk Score: ${item.riskScore}/100
 Confidence: ${item.confidence}
 
 EXECUTIVE SUMMARY:
-Analyzed using Google Search Grounding RAG, domain WHOIS/SSL checks, and multimodal neural classifiers.
+Analyzed using Web Search Evidence RAG, domain WHOIS/SSL checks, and multimodal neural classifiers.
 
 DISCLAIMER:
 AI-generated analysis is advisory and should not be treated as absolute proof of authenticity.
@@ -77,7 +77,7 @@ AI-generated analysis is advisory and should not be treated as absolute proof of
 
   return (
     <div className="space-y-6">
-      
+
       {/* Header */}
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 sm:p-8 shadow-sm space-y-4">
         <div>
@@ -95,7 +95,7 @@ AI-generated analysis is advisory and should not be treated as absolute proof of
 
         {/* Search & Filter Controls */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          
+
           {/* Search Box */}
           <div className="relative flex-1 w-full">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />

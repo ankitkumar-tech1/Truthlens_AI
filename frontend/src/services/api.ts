@@ -6,8 +6,8 @@ import {
 } from '../types';
 
 const API_BASE_URL = (
-  import.meta.env.VITE_API_URL ||
-  'https://truthlens-ai-kye7.onrender.com'
+  import.meta.env.VITE_API_URL ??
+  (import.meta.env.DEV ? '' : 'https://truthlens-ai-kye7.onrender.com')
 ).replace(/\/$/, '');
 
 export class AnalysisApiError extends Error {
